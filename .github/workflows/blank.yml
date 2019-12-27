@@ -24,4 +24,4 @@ jobs:
 #        SA_KEY: ${{ secrets.gcp_sa }}
 #      run: cat <<< "$SA_KEY" > "./tmp/gcp_sa.json"
     - name: Sample
-      run: ls -la
+      run: ls -la /
