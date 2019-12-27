@@ -19,7 +19,7 @@ Build a globally distributed application using serverless approach on Google Clo
 
 ### Prerequisites
 
-Create projects for terraform state and a project per environment. ![setup.sh](/etc/setup.sh) script covers all the setup.
+Create projects for terraform state and a project per environment. [setup.sh](/etc/setup.sh) script covers all the setup.
 
 #### Necessary tools
 
@@ -79,5 +79,3 @@ Flow:
 - if a user pushes to an arbitrary branch then the pipeline will:
   * lint all the files in the project (by executing `make lint`)
   * do **plan** on **dev** environment (by executing `TF_VAR_env=dev make plan`)
-
-[Dockerfile](build/Dockerfile) is used to run all the commands above.
