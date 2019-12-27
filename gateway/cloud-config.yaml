@@ -1,0 +1,27 @@
+#cloud-config
+
+write_files:
+  - path: /etc/envoy/envoy.yaml
+    permissions: 0644
+    owner: root
+    content: |
+      ${envoy_config}
+  - path: /etc/systemd/system/envoy.service
+    permissions: 0644
+    owner: root
+    content: |
+      [Unit]
+      Description=Envoy service
+      Requires=network-online.target
+      After=network-online.target
+      [Service]
+      ExecStart=/usr/bin/envoy --config-path /etc/envoy/envoy.yaml
+runcmd:
+  - apt-get update
+  - apt-get -y install software-properties-common curl ca-certificates apt-transport-https gnupg2
+  - curl -sL 'https://getenvoy.io/gpg' | apt-key add -
+  - add-apt-repository "deb [arch=amd64] https://dl.bintray.com/tetrate/getenvoy-deb $(lsb_release -cs) stable"
+  - apt-get update
+  - apt-get install -y getenvoy-envoy
+  - systemctl daemon-reload
+  - systemctl start envoy
