@@ -5,13 +5,23 @@ on: [push]
 jobs:
   build:
 
+    container:
+      image: alpine
+      env:
+        A: b
+#      volumes:
+#        - my_docker_volume:/volume_mount
+      options: --cpus 1
+
+
     runs-on: ubuntu-latest
+
 
     steps:
     - uses: actions/checkout@v1
-    - name: Save SA key file
-      env:
-        SA_KEY: ${{ secrets.gcp_sa }}
-      run: cat <<< "$SA_KEY" > "./tmp/gcp_sa.json"
+#    - name: Save SA key file
+#      env:
+#        SA_KEY: ${{ secrets.gcp_sa }}
+#      run: cat <<< "$SA_KEY" > "./tmp/gcp_sa.json"
     - name: Sample
-      run: ls -la ./tmp/
+      run: ls -la
