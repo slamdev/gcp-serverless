@@ -17,4 +17,6 @@ RUN apk add --update --no-cache bash git openssh make curl python2 \
  && curl -sSL https://sdk.cloud.google.com | bash \
  && gcloud version
 
+COPY docker-entrypoint.sh /usr/local/bin/
+
 ENTRYPOINT ["docker-entrypoint.sh"]
