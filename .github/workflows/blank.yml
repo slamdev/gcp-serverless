@@ -5,10 +5,12 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SA_KEY: ${{ secrets.gcp_sa }}
     container:
       image: slamdev/gcp-serverless-builder
       env:
-        SA_KEY: ${{ secrets.gcp_sa }}
+        SA_KEY: "${SA_KEY}"
     steps:
     - uses: actions/checkout@v1
     - name: Sample
