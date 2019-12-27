@@ -9,5 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
+    - name: Save SA key file
+      env:
+        SA_KEY: ${{ secrets.gcp_sa }}
+      run: cat <<< "$SA_KEY" > "./tmp/gcp_sa.json"
+    - name: Sample
+      run: ls -la ./tmp/
