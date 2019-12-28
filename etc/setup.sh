@@ -37,7 +37,7 @@ if [ -z "$(gsutil versioning get gs://${TERRAFRORM_BUCKET_NAME} | grep "Enabled"
 fi
 
 if [ -z "$(gsutil acl get gs://${TERRAFRORM_BUCKET_NAME} | grep "${TERRAFRORM_SA_FULL}")" ]; then
-  gsutil acl ch -u "${TERRAFRORM_SA_FULL}:WRITER" "gs://${TERRAFRORM_BUCKET_NAME}"
+  gsutil acl ch -u "${TERRAFRORM_SA_FULL}:OWNER" "gs://${TERRAFRORM_BUCKET_NAME}"
 fi
 
 for ENV in ${ENVS}; do
