@@ -21,4 +21,6 @@ jobs:
       run: |
         docker-entrypoint.sh
         TF_VAR_env=$(echo "${GITHUB_REF}" | grep "master" > /dev/null && echo "dev" || echo "prod")
+        echo "${GOOGLE_APPLICATION_CREDENTIALS}"
+        gcloud info
         make apply
