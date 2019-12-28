@@ -1,4 +1,4 @@
-# GCP Serverless
+# GCP Serverless [![Build Status](https://github.com/slamdev/gcp-serverless/workflows/deploy/badge.svg)](https://github.com/slamdev/gcp-serverless/actions?query=workflow%3Adeploy) [![Instance](https://img.shields.io/uptimerobot/status/m784066675-cecccf2199b268abfefca2c4)](https://dev.gcp-serverless.slamdev.net)
 
 ## Project AIM
 
