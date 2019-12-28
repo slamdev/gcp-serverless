@@ -1,5 +1,6 @@
 FROM alpine:3.10.2
 
+ENV GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp_sa.json
 ENV TF_VERSION=0.12.18
 ENV TG_VERSION=v0.21.10
 ENV PATH $PATH:/root/google-cloud-sdk/bin
