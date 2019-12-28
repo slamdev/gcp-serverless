@@ -17,7 +17,8 @@ jobs:
         SA_KEY: "${SA_KEY}"
     steps:
     - uses: actions/checkout@v1
-    - name: Sample
+    - name: deploy
       run: |
         docker-entrypoint.sh
-        echo "${GITHUB_REF}"
+        TF_VAR_env=$(echo "${GITHUB_REF}" | grep "master" > /dev/null && echo "dev" || echo "prod")
+        echo "${TF_VAR_env}"
