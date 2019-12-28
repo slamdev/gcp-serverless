@@ -7,7 +7,7 @@ on:
       - production
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     env:
       SA_KEY: ${{ secrets.gcp_sa }}
@@ -18,4 +18,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Sample
-      run: docker-entrypoint.sh && ls -la /tmp/gcp_sa.json && gcloud info
+      run: |
+        docker-entrypoint.sh
+        echo "${GITHUB_REF}"
