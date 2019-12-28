@@ -21,4 +21,4 @@ jobs:
       run: |
         docker-entrypoint.sh
         TF_VAR_env=$(echo "${GITHUB_REF}" | grep "master" > /dev/null && echo "dev" || echo "prod")
-        echo "${TF_VAR_env}"
+        make apply
