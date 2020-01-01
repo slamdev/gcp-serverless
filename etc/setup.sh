@@ -36,9 +36,16 @@ if [ -z "$(gsutil versioning get gs://${TERRAFRORM_BUCKET_NAME} | grep "Enabled"
   gsutil versioning set on gs://${TERRAFRORM_BUCKET_NAME}
 fi
 
-if [ -z "$(gsutil acl get gs://${TERRAFRORM_BUCKET_NAME} | grep "${TERRAFRORM_SA_FULL}")" ]; then
-  gsutil acl ch -u "${TERRAFRORM_SA_FULL}:OWNER" "gs://${TERRAFRORM_BUCKET_NAME}"
+if [ -z "$(gcloud projects get-iam-policy "${TERRAFORM_ADMIN_PROJECT}" | grep "${TERRAFRORM_SA_FULL}")" ]; then
+  gcloud projects add-iam-policy-binding "${TERRAFORM_ADMIN_PROJECT}" --member "serviceAccount:${TERRAFRORM_SA_FULL}" --role roles/storage.admin
 fi
+
+SERVICES="iam.googleapis.com cloudresourcemanager.googleapis.com cloudfunctions.googleapis.com"
+for SERVICE in ${SERVICES}; do
+  if [ -z "$(gcloud services list --enabled --project="${TERRAFORM_ADMIN_PROJECT}" | grep "${SERVICE}")" ]; then
+    gcloud services enable "${SERVICE}" --project="${TERRAFORM_ADMIN_PROJECT}"
+  fi
+done
 
 for ENV in ${ENVS}; do
   PROJECT_NAME="${APPLICATION_NAME}-${ENV}"
