@@ -12,6 +12,10 @@ provider "google-beta" {
   project = var.project_id
 }
 
+provider "template" {
+  version = "2.1.2"
+}
+
 variable "project_id" {
   type = string
 }
