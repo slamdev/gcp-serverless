@@ -4,9 +4,10 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "TS_NODE_PROJECT=tsconfig.webpack.json webpack-dev-server --mode development --hot",
-    "build": "TS_NODE_PROJECT=tsconfig.webpack.json webpack --mode production",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "apigen": "autorest --typescript --input-file=swagger.yaml --output-folder=src/generated --add-credentials",
+    "start": "npm run apigen && TS_NODE_PROJECT=tsconfig.webpack.json webpack-dev-server --mode development --hot",
+    "build": "npm run apigen && TS_NODE_PROJECT=tsconfig.webpack.json webpack --mode production"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -34,13 +35,18 @@
     "typescript": "^3.7.4",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
+    "webpack-dev-server": "^3.10.1",
+    "autorest": "^3.0.5231"
   },
   "dependencies": {
     "@material-ui/core": "^4.8.2",
     "@material-ui/icons": "^4.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "@reach/router": "^1.2.1"
+    "@reach/router": "^1.2.1",
+    "@azure/ms-rest-js": "^2.0.4",
+    "core-js": "^3.6.1",
+    "regenerator-runtime": "^0.13.3",
+    "react-use-promise": "^0.2.0"
   }
 }

@@ -4,8 +4,14 @@ import {Form} from "./component/Form";
 import {ItemsList} from "./component/ItemsList";
 import Item from "./Item";
 import {RouteComponentProps} from '@reach/router';
+import {getItems} from "./Api";
+import usePromise from "react-use-promise";
 
 const useItems = () => {
+    const [itemsResult, itemsError] = usePromise(getItems(), []);
+    console.log(itemsResult);
+    console.log(itemsError);
+
     const [items, setItems] = useState([] as Array<Item>);
     const onSave = (name: string) => {
         setItems([...items, {name: name, completed: false, id: name}]);

@@ -29,18 +29,12 @@ const config: webpack.Configuration = {
                     loader: 'babel-loader',
                     options: {
                         presets: [
-                            // [
-                            //     '@babel/preset-env',
-                            //     {
-                            //         targets: {
-                            //             browsers: [
-                            //                 'last 2 versions'
-                            //             ]
-                            //         },
-                            //         modules: false // Needed for tree shaking to work.
-                            //     }
-                            // ],
-                            '@babel/preset-env',
+                            ['@babel/preset-env', {
+                                "modules": false,
+                                "useBuiltIns": "usage",
+                                "corejs": 3,
+                                "targets": "ie 11"
+                            }],
                             '@babel/preset-react',
                             '@babel/typescript',
                         ],
