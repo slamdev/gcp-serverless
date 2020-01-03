@@ -43,7 +43,7 @@ resource "google_storage_bucket" "main" {
   force_destroy = true
   website {
     main_page_suffix = "index.html"
-    not_found_page   = "404.html"
+    not_found_page   = "index.html"
   }
 }
 
@@ -70,6 +70,6 @@ resource "null_resource" "main" {
   ]
   provisioner "local-exec" {
     //noinspection HILUnknownResourceType
-    command = "gsutil rsync -J -d -r src gs://${google_storage_bucket.main[each.value].name}"
+    command = "gsutil rsync -J -d -r dist gs://${google_storage_bucket.main[each.value].name}"
   }
 }
