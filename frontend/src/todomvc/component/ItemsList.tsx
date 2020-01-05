@@ -1,12 +1,12 @@
 import React from "react";
 import {Checkbox, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Item from "../Item";
+import {Item} from "../../generated/lib/models";
 
 interface Props {
     onDelete: (id: string) => void
     onCheck: (id: string, checked: boolean) => void
-    items: Array<Item>
+    items: Item[]
 }
 
 export const ItemsList: React.FunctionComponent<Props> = (props) => (

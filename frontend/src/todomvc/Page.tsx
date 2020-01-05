@@ -1,33 +1,28 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Typography} from "@material-ui/core";
 import {Form} from "./component/Form";
 import {ItemsList} from "./component/ItemsList";
-import Item from "./Item";
 import {RouteComponentProps} from '@reach/router';
-import {getItems} from "./Api";
-import usePromise from "react-use-promise";
+import * as Api from "./Api";
+import {Item} from "../generated/lib/models";
 
 const useItems = () => {
-    const [itemsResult, itemsError] = usePromise(getItems(), []);
-    console.log(itemsResult);
-    console.log(itemsError);
-
-    const [items, setItems] = useState([] as Array<Item>);
+    const [items, setItems] = useState([] as Item[]);
+    useEffect(() => {
+        Api.getItems().then(items => setItems(items));
+    }, []);
     const onSave = (name: string) => {
-        setItems([...items, {name: name, completed: false, id: name}]);
+        const item = {id: 'generated', name: name, completed: false};
+        Api.saveItem(item).then(() => Api.getItems().then(items => setItems(items)));
     };
     const onDelete = (id: string) => {
-        const newItems = items.filter((item) => item.id !== id);
-        setItems(newItems);
+        Api.deleteItem(id).then(() => Api.getItems().then(items => setItems(items)));
     };
     const onCheck = (id: string, checked: boolean) => {
-        const newItems = items.map((item) => {
-            if (item.id == id) {
-                item.completed = checked;
-            }
-            return item;
+        items.filter(item => item.id == id).forEach(item => {
+            item.completed = checked;
+            Api.saveItem(item).then(() => Api.getItems().then(items => setItems(items)));
         });
-        setItems(newItems);
     };
     return [items, onSave, onDelete, onCheck] as const;
 };

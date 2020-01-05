@@ -22,26 +22,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Item'
-        default:
-          $ref: '#/components/responses/Error'
-    post:
-      operationId: createItem
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewItem'
-      responses:
-        '200':
-          description: Item
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/ItemsListResponse'
         default:
           $ref: '#/components/responses/Error'
   /api/items-endpoint/{id}:
@@ -59,11 +40,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/ItemResponse'
         default:
           $ref: '#/components/responses/Error'
     put:
-      operationId: updateItem
+      operationId: saveItem
       parameters:
         - name: id
           in: path
@@ -75,14 +56,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateItem'
+              $ref: '#/components/schemas/SaveItemRequest'
       responses:
         '200':
           description: Item
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/ItemResponse'
         default:
           $ref: '#/components/responses/Error'
     delete:
@@ -110,20 +91,53 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ResponseError'
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    NewItem:
+    ErrorResponse:
       type: object
       properties:
-        name:
+        requestId:
           type: string
-    UpdateItem:
+          format: uuid
+        message:
+          type: string
+      required:
+        - requestId
+        - message
+    SaveItemRequest:
       type: object
       properties:
         name:
           type: string
         completed:
           type: boolean
+      required:
+        - name
+        - completed
+    ItemResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        item:
+          $ref: '#/components/schemas/Item'
+      required:
+        - requestId
+        - item
+    ItemsListResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+      required:
+        - requestId
+        - items
     Item:
       type: object
       properties:
@@ -134,11 +148,7 @@ components:
           type: string
         completed:
           type: boolean
-    ResponseError:
-      type: object
-      properties:
-        requestId:
-          type: string
-          format: uuid
-        message:
-          type: string
+      required:
+        - id
+        - name
+        - completed
