@@ -1,21 +1,27 @@
 package function
 
 import (
-	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 )
 
 func Trigger(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		log.Printf("ioutil.ReadAll: %v", err)
-		http.Error(w, "Error reading request", http.StatusBadRequest)
-		return
-	}
-	log.Print("works")
-	if _, err := fmt.Fprintf(w, "Echo: %v", string(data)); err != nil {
-		log.Printf("error: %v", err)
-	}
+	Handler(&handler{}).ServeHTTP(w, r)
+}
+
+type handler struct{}
+
+func (h *handler) GetItems(w http.ResponseWriter, r *http.Request) {
+	panic("implement me")
+}
+
+func (h *handler) DeleteItem(w http.ResponseWriter, r *http.Request) {
+	panic("implement me")
+}
+
+func (h *handler) GetItem(w http.ResponseWriter, r *http.Request) {
+	panic("implement me")
+}
+
+func (h *handler) SaveItem(w http.ResponseWriter, r *http.Request) {
+	panic("implement me")
 }
