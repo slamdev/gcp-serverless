@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Typography} from "@material-ui/core";
 import {Form} from "./component/Form";
 import {ItemsList} from "./component/ItemsList";
@@ -7,9 +7,17 @@ import * as Api from "./Api";
 import {Item} from "../generated/lib/models";
 
 const useItems = () => {
+    const componentIsMounted = useRef(true);
     const [items, setItems] = useState([] as Item[]);
     useEffect(() => {
-        Api.getItems().then(items => setItems(items));
+        Api.getItems().then(items => {
+            if (componentIsMounted.current) {
+                setItems(items);
+            }
+        });
+        return () => {
+            componentIsMounted.current = false;
+        };
     }, []);
     const onSave = (name: string) => {
         Api.saveItem(name, false).then(() => Api.getItems().then(items => setItems(items)));
