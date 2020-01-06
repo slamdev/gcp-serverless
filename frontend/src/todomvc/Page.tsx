@@ -12,16 +12,14 @@ const useItems = () => {
         Api.getItems().then(items => setItems(items));
     }, []);
     const onSave = (name: string) => {
-        const item = {id: 'generated', name: name, completed: false};
-        Api.saveItem(item).then(() => Api.getItems().then(items => setItems(items)));
+        Api.saveItem(name, false).then(() => Api.getItems().then(items => setItems(items)));
     };
     const onDelete = (id: string) => {
         Api.deleteItem(id).then(() => Api.getItems().then(items => setItems(items)));
     };
     const onCheck = (id: string, checked: boolean) => {
         items.filter(item => item.id == id).forEach(item => {
-            item.completed = checked;
-            Api.saveItem(item).then(() => Api.getItems().then(items => setItems(items)));
+            Api.saveItem(item.name, checked, item.id).then(() => Api.getItems().then(items => setItems(items)));
         });
     };
     return [items, onSave, onDelete, onCheck] as const;

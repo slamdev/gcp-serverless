@@ -1,34 +1,43 @@
 import {TodoMVC} from "../generated/lib/todoMVC";
 import {ServiceClientCredentials} from "@azure/ms-rest-js/lib/credentials/serviceClientCredentials";
 import {WebResource} from "@azure/ms-rest-js/lib/webResource";
-import {Item, ItemsListResponse, SaveItemRequest} from "../generated/lib/models";
-import {RestError} from "@azure/ms-rest-js";
+import {SaveItemRequest} from "../generated/lib/models";
 
 const env = 'dev';
 
-export const getItems = (): Promise<Item[]> => api.getItems(env)
-    .then((r: ItemsListResponse) => Promise.resolve(r.items))
-    .catch((e: RestError) => {
+export async function getItems() {
+    try {
+        const response = await api.getItems(env);
+        return response.items;
+    } catch (e) {
         console.error(e.message);
-        return Promise.resolve([]);
-    });
+        return [];
+    }
+}
 
-export const deleteItem = (id: string): Promise<void> => api.deleteItem(env, id)
-    .catch((e: RestError) => {
+export async function deleteItem(id: string) {
+    try {
+        await api.deleteItem(env, id);
+    } catch (e) {
         console.error(e.message);
-        return Promise.resolve();
-    }) as Promise<void>;
+    }
+}
 
-export const saveItem = (item: Item): Promise<void> => {
-    const request: SaveItemRequest = {name: item.name, completed: item.completed};
-    return api.saveItem(env, request, item.id)
-        .catch((e: RestError) => {
-            console.error(e.message);
-            return Promise.resolve();
-        }) as Promise<void>;
-};
+export async function saveItem(name: string, completed: boolean, id?: string) {
+    if (!id) {
+        id = 'generated';
+    }
+    const request: SaveItemRequest = {name, completed};
+    try {
+        await api.saveItem(env, request, id);
+    } catch (e) {
+        console.error(e.message);
+    }
+}
 
-const fetchToken = () => new Promise<string>(resolve => resolve('asdZXC'));
+async function fetchToken() {
+    return 'asdZXC';
+}
 
 class TokenCredentials implements ServiceClientCredentials {
     tokenAccessor: Promise<string>;
